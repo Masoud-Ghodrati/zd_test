@@ -18,17 +18,17 @@ Sounds like fun? Please let me know if you have any questions.
 > Thank you.
 
 # Dataset
-The data is a `.tsv` file that contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. In other words, there might be no or multiple relevant answers for a single question. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
+The [data](zendesk_challenge.tsv) is a `.tsv` file that contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. In other words, there might be no or multiple relevant answers for a single question. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
 
 # Data Analysis 
 I took a number of approaches for data analysis. As the question/aim (in the challenge) is rather open, I started with some basic text analyses to more complex NPL approaches. This was done with the hope to mainly see if I can predict the correct label (relevant answer) based on the information in the questions and answers sets. The methods include: 
 
-1. Basic text analyses (see this code: `ZenِDesk_BasicAnalysis.py`) 
-2. Sentence root matching (see this code: `ZenDesk_SentRootMatch.py`) 
-3. Sentence embeddings methods (see this code: `ZenDesk_InferSent.py`)
+1. Basic text analyses (see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)) 
+2. Sentence root matching (see this code: [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py)) 
+3. Sentence embeddings methods (see this code: [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py))
 
 ## Loading the data
-This code loads `zendesk_challenge.tsv ` and does some pre-processing:
+This code loads [`zendesk_challenge.tsv`](zendesk_challenge.tsv) and does some pre-processing:
 ```python
 import os
 import csv
@@ -43,14 +43,14 @@ with open(os.path.join(data_path, file_name)) as tsvfile:
         data_rows.append(row)
 ```
 
-`Data_rows` is a list that contains all lines of the 'zendesk_challenge.tsv'. I need to do some pre-processing before doing anything. An example data point/line:
+`Data_rows` is a list that contains all lines of the [`zendesk_challenge.tsv`](zendesk_challenge.tsv). I need to do some pre-processing before doing anything. An example data point/line:
 
 |   QuestionID   |   Question   |   DocumentID   |   DocumentTitle   |   SentenceID   |   Sentence   |   Label   |
 |---|---|---|---|---|---|---|
 |   Q1           |   how are glacier caves formed?   |   D1   |   Glacier cave   |   D1-0   |   A partly submerged glacier cave on Perito Moreno Glacier .   |   0   |
 
 
-This module `QA_FileParse` goes through every line and makes a list of questions, answers, and other things (e.g., lemmatization, tokenization, stopword removal).
+This module [`QA_FileParse`](ZenDesk_testModule.py) goes through every line and makes a list of questions, answers, and other things (e.g., lemmatization, tokenization, stopword removal).
 
 ```python
 from ZenDesk_testModule import QA_FileParse
@@ -58,7 +58,7 @@ answers_word, answers_word_len, answers, questions_word, questions_word_len, que
 ```
 
 ## Basic text analysis
-Now that I have the data cleaned and pre-processed, I can start doing some basic things. This code [`ZenِDesk_BasicAnalysis.py`]() will do the job. You just need to change these paths:
+Now that I have the data cleaned and pre-processed, I can start doing some basic things. This code [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py) will do the job. You just need to change these paths:
 
 ```python
 # data path and file name
@@ -71,6 +71,7 @@ The first that comes in mind is doing some word frequency analysis to see if the
 
 ![Fig. 1](Word_Frequency.png)
 **Fig. 1:** Visualisation of word frequency in questions and answers
+
 
 
 The 10 top most frequent words in questions and answers are: 
@@ -90,6 +91,7 @@ The 10 top most frequent words in questions and answers are:
 
 
 
+
 Another basic thing to do is to see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Easy, Fig. 2 shows that there is no such relationship.  
 
 
@@ -97,11 +99,13 @@ Another basic thing to do is to see if there is any relationship between the num
 **Fig. 2:** Correlation between question and answer lengths
 
 
+
 Now, let's take one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. 
 I used F1 score for performance evaluation. I also generated random labels and calculated the F1 score based on them to check if F1 score of *word matching method* is higher than random labels. This random process was done 1000 times. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. I found that although the F1 score for *word matching method* is not very high, it is greater than random distribution (Fig. 3).
 
 ![Fig. 3](Word_Matching_Performance.png)
 **Fig. 3:** The performance of *word matching methods* compared to random distributions 
+
 
 ## Sentence root matching
 Another way to approach this question is using (syntactic) dependency parsing. I used [NLTK](https://www.nltk.org/), and [SpaCy’s](https://spacy.io/) root parsing to get the roots for every question and corresponding answer. The goal is to see if the root of the question matches with all the roots/sub-roots of the answer. If there is a root matching between two pairs, then there is a higher chance that the answer is relevant to the question. I used F1 score for performance evaluation.
@@ -112,7 +116,8 @@ The code to run this part is [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.
 data_path   = '.../...'
 result_path = '.../...'
 ```
-F1 score based on sentnece root matching (between Qs and As): **0.3119**
+
+*F1 score based on sentnece root matching (between Qs and As)*: **0.3119**
 
 
 ## Sentence embedding methods
@@ -121,7 +126,7 @@ Here, I used [InferSent](https://github.com/facebookresearch/InferSent) which is
 
 The code to run this part is [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py). Note that you need to first install [InferSent](https://github.com/facebookresearch/InferSent) to be able to run the code.
 
-F1 score based on Sentence embedding (between Qs and As): **0.3119**
+*F1 score based on Sentence embedding (between Qs and As)*: **0.3119**
 
 ## Other TO DO things:
 1. 
