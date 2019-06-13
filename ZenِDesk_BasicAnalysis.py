@@ -120,8 +120,8 @@ sorted_word_count_a.reverse()
 print(f'\n\n|  Q word  |   count  |  A word  |   count  |')
 print(f'|----------|----------|----------|----------|')
 for i in range(10):
-    print(f'|{sorted_word_count_q[i][1]: ^10}|{sorted_word_count_q[i][0]: ^10}|{sorted_word_count_a[i][1]: ^10}|{sorted_word_count_a[i][0]: ^10}')
-    print(f'|----------|----------|----------|----------|')    
+    print(f'|{sorted_word_count_q[i][1]: ^10}|{sorted_word_count_q[i][0]: ^10}|{sorted_word_count_a[i][1]: ^10}|{sorted_word_count_a[i][0]: ^10}|')
+    
 
     
 # We now do a very basic investigation to see if 1) the length of a question 
