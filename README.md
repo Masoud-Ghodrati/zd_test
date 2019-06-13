@@ -66,11 +66,12 @@ data_path   = '.../...'
 result_path = '.../...'
 ```
 
-The first that comes in mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). An easy way for this is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). Word clould emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from Fig. 1 that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but at the same time it covers a range of topic
+The first that comes in mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). An easy way for this is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). Word clould emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from Fig. 1 that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but at the same time it covers a range of topics.
 
 
 ![Fig. 1](Word_Frequency.png)
 **Fig. 1:** Visualisation of word frequency in questions and answers
+
 
 
 
@@ -92,7 +93,9 @@ The 10 top most frequent words in questions and answers are:
 
 
 
+
 Another basic thing to do is to see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Easy, Fig. 2 shows that there is no such relationship.  
+
 
 
 ![Fig. 2](QA_length_corr.png)
@@ -100,11 +103,15 @@ Another basic thing to do is to see if there is any relationship between the num
 
 
 
+
 Now, let's take one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. 
 I used F1 score for performance evaluation. I also generated random labels and calculated the F1 score based on them to check if F1 score of *word matching method* is higher than random labels. This random process was done 1000 times. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. I found that although the F1 score for *word matching method* is not very high, it is greater than random distribution (Fig. 3).
 
+
 ![Fig. 3](Word_Matching_Performance.png)
 **Fig. 3:** The performance of *word matching methods* compared to random distributions 
+
+
 
 
 ## Sentence root matching
