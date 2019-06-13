@@ -57,23 +57,23 @@ from ZenDesk_testModule import QA_FileParse
 answers_word, answers_word_len, answers, questions_word, questions_word_len, questions, labels = QA_FileParse(data_rows)
 ```
 
-## Basic text analyses
-Now that I have the data cleaned and pre-processed, I can start doing some basic things. This [`ZenِDesk_BasicAnalysis.py`]() will do it. You just need to change these paths:
+## Basic text analysis
+Now that I have the data cleaned and pre-processed, I can start doing some basic things. This code [`ZenِDesk_BasicAnalysis.py`]() will do the job. You just need to change these paths:
+
 ```python
 # data path and file name
 data_path   = '.../...'
 result_path = '.../...'
 ```
-The first that comes in mind is doing some word frequency analysis to see the content of the questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). One of the easy-to-spot ways for showing the results of world frequency is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). This visualisation emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from the results that the text (Qs and As) is more about a number of topics such as *united states*, *war*, and *country* but at the same time but it covers a range of topic
-.center[
-![My image](https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-.caption[
-**Fig. 1:** Image caption
-]
 
-]
+The first that comes in mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). An easy way for this is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). Word clould emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from Fig. 1 that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but at the same time it covers a range of topic
 
-The 10 top most frequent words in questions are: 
+.center[![Fig. 1](Word_Frequency.png)
+.caption[**Fig. 1:** Visualisation of word frequency in questions and answers]]
+
+
+The 10 top most frequent words in questions and answers are: 
+
 |  Q word  |   count  |  A word  |   count  |
 |----------|----------|----------|----------|
 |  state   |    26    |  state   |   956    
@@ -98,32 +98,32 @@ The 10 top most frequent words in questions are:
 |----------|----------|----------|----------|
 
 
-I can also see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Results show that there is no such relationship.  
- .center[
-![My image](https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-.caption[
-**Fig. 1:** Image caption
-]
-]
-Now let's take one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. I used F1 score for performance evaluation. I also generated random labels and calculated the F1 score based on them to check if F1 score of *word matching method* is higher than random. This random process was done 1000 time. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. The results show although F1 score for *word matching method* is not very high, it is greater than random distribution (Fig. 3).
- .center[
-![My image](https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
-.caption[
-**Fig. 1:** Image caption
-]
-]
+Another basic thing to do is to see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Easy, Fig. 2 shows that there is no such relationship.  
+
+.center[
+![Fig. 2](QA_length_corr.png)
+.caption[**Fig. 2:** Correlation between question and answer lengths]]
+
+Now, let's take one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. 
+I used F1 score for performance evaluation. I also generated random labels and calculated the F1 score based on them to check if F1 score of *word matching method* is higher than random labels. This random process was done 1000 times. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. I found that although the F1 score for *word matching method* is not very high, it is greater than random distribution (Fig. 3).
+
+.center[
+![Fig. 3](Word_Matching_Performance.png)
+.caption[**Fig. 3:** The performance of *word matching methods* compared to random distributions ]]
+
 ## Sentence root matching
-Another way to approach this question is using (syntactic) dependency parsing. I used [NLTK](https://www.nltk.org/), and [SpaCy’s](https://spacy.io/) root parsing to get the roots for every question and corresponding answer.  The goal is to see if the root of the question matches with all the roots/sub-roots of the answer. If there is a root matching between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. I used F1 score for performance evaluation.
+Another way to approach this question is using (syntactic) dependency parsing. I used [NLTK](https://www.nltk.org/), and [SpaCy’s](https://spacy.io/) root parsing to get the roots for every question and corresponding answer. The goal is to see if the root of the question matches with all the roots/sub-roots of the answer. If there is a root matching between two pairs, then there is a higher chance that the answer is relevant to the question. I used F1 score for performance evaluation.
 The code to run this part is `ZenDesk_SentRootMatch.py`. You only need to change the paths
+
 ```python
 # data path and file name
 data_path   = '.../...'
 result_path = '.../...'
 ```
-F1 score based on the number of matched root in Q and A:      0.3119
+F1 score based on sentnece root matching (between Qs and As): 0.3119
 
 
-##Sentence embeddings methods ()
+## Sentence embeddings methods ()
 
 Sentence embedding methods encode words or sentences into fixed length numeric vectors which are pre-trained on a large text corpus. These embeddings can then be used for various downstream tasks like finding similarity between two sentences.
 Here I used  [InferSent](https://github.com/facebookresearch/InferSent), is a sentence embeddings method that provides semantic representations for English sentences. It is trained on natural language inference data and generalizes well to many different tasks. The output of the model s a ‘numpy’ array with a vector of dimension 4096 (for a sentence/word). Using these arrays, I found the similarities between questions and answers and predicted the labels based on the similarity. 
