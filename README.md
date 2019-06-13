@@ -28,7 +28,7 @@ I took a number of approaches for data analysis. As the question/aim (in the cha
 3. Sentence embeddings methods (see this code: `ZenDesk_InferSent.py`)
 
 ## Loading the data
-This code loads and parses the `zendesk_challenge.tsv ` file:
+This code loads `zendesk_challenge.tsv ` and does some pre-processing:
 ```python
 import os
 import csv
@@ -43,11 +43,15 @@ with open(os.path.join(data_path, file_name)) as tsvfile:
         data_rows.append(row)
 ```
 
-Data_rows is a list that contains all the lines of the 'zendesk_challenge.tsv' so we need to do some pre-processing before doing anything. An example data point/line:
+`Data_rows` is a list that contains all lines of the 'zendesk_challenge.tsv'. I need to do some pre-processing before doing anything. An example data point/line:
+
 |   QuestionID   |   Question   |   DocumentID   |   DocumentTitle   |   SentenceID   |   Sentence   |   Label   |
 |---|---|---|---|---|---|---|
 |   Q1           |   how are glacier caves formed?   |   D1   |   Glacier cave   |   D1-0   |   A partly submerged glacier cave on Perito Moreno Glacier .   |   0   |
+
+
 This module `QA_FileParse` goes through every line and makes a list of questions, answers, and other things (e.g., lemmatization, tokenization, stopword removal).
+
 ```python
 from ZenDesk_testModule import QA_FileParse
 answers_word, answers_word_len, answers, questions_word, questions_word_len, questions, labels = QA_FileParse(data_rows)
@@ -68,6 +72,7 @@ The first that comes in mind is doing some word frequency analysis to see the co
 ]
 
 ]
+
 The 10 top most frequent words in questions are: 
 |  Q word  |   count  |  A word  |   count  |
 |----------|----------|----------|----------|
@@ -91,6 +96,7 @@ The 10 top most frequent words in questions are:
 |----------|----------|----------|----------|
 |    u     |    15    |   used   |   352    
 |----------|----------|----------|----------|
+
 
 I can also see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Results show that there is no such relationship.  
  .center[
