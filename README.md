@@ -75,6 +75,16 @@ The first that comes in mind is doing some word frequency analysis to see if the
 ]
 ]
 
+.center[
+
+![My image](https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+
+.caption[
+**Fig. 1:** Image caption
+]
+
+]
+
 
 The 10 top most frequent words in questions and answers are: 
 
