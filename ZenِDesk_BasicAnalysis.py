@@ -180,7 +180,7 @@ corr = stats.pearsonr(x=corr_sen_len[:,0], y=corr_sen_len[:,1])
 plt.text(1, 90,"Pearson r = " + str(corr[0]))
 plt.text(1, 85,"p = " + str(corr[1]))
 plt.xlabel('Question length (#non-stop words)')
-plt.ylabel('Correct answer length')
+plt.ylabel('Correct answer length (#non-stop words)')
 plt.axis([0, 20, 0, 100])
 
 
@@ -189,7 +189,7 @@ sns.regplot(x=incorr_sen_len[:,0], y=incorr_sen_len[:,1], color="g", ax=ax2)
 corr = stats.pearsonr(x=incorr_sen_len[:,0], y=incorr_sen_len[:,1])
 plt.text(1, 90,"Pearson r = " + str(corr[0]))
 plt.text(1, 85,"p = " + str(corr[1]))
-plt.xlabel('Question length')
+plt.xlabel('Question length (#non-stop words)')
 plt.ylabel('Incorrect answer length (#non-stop words)')
 plt.axis([0, 20, 0, 100])
 
