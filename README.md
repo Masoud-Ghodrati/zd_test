@@ -21,18 +21,19 @@ Sounds like fun? Please let me know if you have any questions.
 The data is a `.tsv` file that contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. In other words, there might be no or multiple relevant answers for a single question. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
 
 # Data Analysis 
-I took a number of approaches for data analysis. As the question/aim in the email is rather open, I started with some basic text analyses to more complex NPL approaches. This was done with the hope to mainly see if I can guess the correct answer without knowing the label. The methods include:
-Basic text analyses (see this code)
-Sentence root matching (see this code)
-Sentence embeddings methods (see this code)
+I took a number of approaches for data analysis. As the question/aim (in the challenge) is rather open, I started with some basic text analyses to more complex NPL approaches. This was done with the hope to mainly see if I can predict the correct label (relevant answer) based on the information in the questions and answers sets. The methods include: 
+
+1. Basic text analyses (see this code: `ZenِDesk_BasicAnalysis.py`) 
+2. Sentence root matching (see this code: `ZenDesk_SentRootMatch.py`) 
+3. Sentence embeddings methods (see this code: `ZenDesk_InferSent.py`)
 
 ## Loading the data
 This code loads and parses the `zendesk_challenge.tsv ` file:
 ```python
 import os
 import csv
-data_path= ‘.../...’
-file_name   = 'zendesk_challenge.tsv'
+data_path         = ‘.../...’
+file_name         = 'zendesk_challenge.tsv'
  
 # first lets read the tsv data file
 with open(os.path.join(data_path, file_name)) as tsvfile:
@@ -41,6 +42,7 @@ with open(os.path.join(data_path, file_name)) as tsvfile:
     for row in tsv_reader:
         data_rows.append(row)
 ```
+
 Data_rows is a list that contains all the lines of the 'zendesk_challenge.tsv' so we need to do some pre-processing before doing anything. An example data point/line:
 |   QuestionID   |   Question   |   DocumentID   |   DocumentTitle   |   SentenceID   |   Sentence   |   Label   |
 |---|---|---|---|---|---|---|
