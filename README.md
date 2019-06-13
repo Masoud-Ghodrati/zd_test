@@ -4,11 +4,13 @@ The Challenge
 
 This is a part of the email that I got with information about the test and data:
 > ...We've built you a challenge similar to the type of problems you will probably work on if you get an offer from us. We do this so we can understand what working with you will be like, but also so you get a better idea of what it's like to work here before going through a full interview process.
+
 ***The challenge***
 We've got a good amount of data about how customers interact with businesses. We think there is a huge amount of knowledge hidden inside this data that could potentially lead to better customer experiences.
 Much of the data we work with is textual. I’ve included a tab-separated data file of question/answer pairs over a wide variety of topics. The data does provides labels but be creative, show us something interesting.
 We'd like you to play with this data. Build a model and generate a visualisation. When you are done send us a write-up and the code you used to get there. Also, tell us what other things you would do if you had more time. Think about product features that we could ship to production or interesting analytics that could be valuable for our customers. This could be anything. The more ideas the better.
 We'd expect that you build most of this in the language you know best. Send us your code with instructions on how to run it and a short write up of your results.
+
 ***If you can have the challenge back to me no later than 1 week from tomorrow morning that would be great.***
 Sounds like fun? Please let me know if you have any questions.
 
