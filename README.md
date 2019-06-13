@@ -68,12 +68,10 @@ result_path = '.../...'
 
 The first that comes in mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). An easy way for this is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). Word clould emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from Fig. 1 that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but at the same time it covers a range of topic
 
-.center[
+
 ![Fig. 1](Word_Frequency.png)
-.caption[
-**Fig. 1:** Visualisation of word frequency in questions and answers
-]
-]
+.center[**Fig. 1:** Visualisation of word frequency in questions and answers]
+
 
 .center[
 
