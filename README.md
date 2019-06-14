@@ -26,7 +26,7 @@ The following shows implementation details.
 
 From the technical side, if I had more time, I could play with other models (e.g., [Google BERT](https://github.com/google-research/bert)) and large datasets (e.g., [Natural Questions](https://ai.google.com/research/NaturalQuestions)) to see how they perform on the provided data. I also did not try to develop a supervised model based on the provided data to evaluate its performance. 
 
-Other more things that I could play with if I had more time are:
+Other things that I could play with if I had more time are:
 * Categorize relevant answers and questions to a number of groups based on their content to see what are the several main contents. This then would help to, for example, provide related information on the company website or social media based on the content (and customers interests)
 
 * Grouping the questions into several main contents also helps to see how many times customers had similar requests from, let’s say, customer service (such things can also be used in the targetted advertisement)
