@@ -24,8 +24,8 @@ import seaborn as sns
 from ZenDesk_testModule import QA_FileParse
 
 # data path and file name
-data_path   = '//ad.monash.edu/home/User098/masoudg/Desktop/ZenDesk'
-result_path = '//ad.monash.edu/home/User098/masoudg/Desktop/ZenDesk'
+data_path   = '.../...'
+result_path = '.../...'
 file_name   = 'zendesk_challenge.tsv'
 
 # first lets read the tsv data file

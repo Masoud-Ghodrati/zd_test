@@ -30,9 +30,21 @@ from nltk.stem import WordNetLemmatizer
 from models import InferSent
 
 # data path and file name
-data_path   = '//ad.monash.edu/home/User098/masoudg/Desktop/ZenDesk'
-result_path = '//ad.monash.edu/home/User098/masoudg/Desktop/ZenDesk'
+data_path   = '.../...'
+result_path = '.../...'
 file_name   = 'zendesk_challenge.tsv'
+
+# set InfeSent model path and version 
+model_version = 1
+MODEL_PATH    = '.../encoder/infersent%s.pkl' % model_version
+
+# If infersent1 model -> use GloVe embeddings. If infersent2 model -> use InferSent embeddings.
+# you need to downlaod these datasets refer to: https://github.com/facebookresearch/InferSent
+if model_version == 1:
+    W2V_PATH = '.../dataset/GloVe/glove.840B.300d.txt' 
+else:
+    W2V_PATH = '.../dataset/fastText/crawl-300d-2M.vec' 
+
 
 # first lets read the tsv data file
 with open(os.path.join(data_path, file_name)) as tsvfile:
@@ -45,8 +57,6 @@ _, _, answers, _, _, quetsions, labels = QA_FileParse(data_rows)
 
 
 # load FB research InferSent model
-model_version = 1
-MODEL_PATH    = 'C:/MyFolder/InferSent/encoder/infersent%s.pkl' % model_version
 params_model  = {'bsize': 64, 'word_emb_dim': 300, 'enc_lstm_dim': 2048,
                 'pool_type': 'max', 'dpout_model': 0.0, 'version': model_version}
 infersent      = InferSent(params_model)
@@ -56,11 +66,7 @@ infersent.load_state_dict(torch.load(MODEL_PATH))
 use_cuda = False
 infersent = infersent.cuda() if use_cuda else infersent
 
-# If infersent1 model -> use GloVe embeddings. If infersent2 model -> use InferSent embeddings.
-if model_version == 1:
-    W2V_PATH = 'C:/MyFolder/InferSent/dataset/GloVe/glove.840B.300d.txt' 
-else:
-    W2V_PATH = 'C:/MyFolder/InferSent/dataset/fastText/crawl-300d-2M.vec' 
+
 infersent.set_w2v_path(W2V_PATH)
 # Load embeddings of K most frequent words
 infersent.build_vocab_k_words(K=500000)
@@ -122,11 +128,11 @@ for i_q, this_q in enumerate(quetsions):
     
     
 
-pred_labels_cos = [y for x in pred_labels_cos for y in x]
-embeddings_dic['Predicted_label_Cos'].append(pred_labels_cos)
+pred_labels_cos_ = [y for x in pred_labels_cos for y in x]
+embeddings_dic['Predicted_label_Cos'] = pred_labels_cos_
 
-pred_labels_euc = [y for x in pred_labels_euc for y in x]
-embeddings_dic['Predicted_label_Euc'].append(pred_labels_euc)
+pred_labels_euc_ = [y for x in pred_labels_euc for y in x]
+embeddings_dic['Predicted_label_Euc'] = pred_labels_euc_
 
 # make a datafarme
 df             = pd.DataFrame(embeddings_dic)
