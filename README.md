@@ -1,64 +1,39 @@
-# ZD Challenge
+# ZD Challenge Overview
 
-The Challenge
+The provided [dataset](zendesk_challenge.tsv)  contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
 
-This is a part of the email that I got with information about the test and data:
-> ...We've built you a challenge similar to the type of problems you will probably work on if you get an offer from us. We do this so we can understand what working with you will be like, but also so you get a better idea of what it's like to work here before going through a full interview process.
-> 
-> **The challenge**
->
-> We've got a good amount of data about how customers interact with businesses. We think there is a huge amount of knowledge hidden inside this data that could potentially lead to better customer experiences.
-> Much of the data we work with is textual. I’ve included a tab-separated data file of question/answer pairs over a wide variety of topics. The data does provides labels but be creative, show us something interesting.
-> We'd like you to play with this data. Build a model and generate a visualisation. When you are done send us a write-up and the code you used to get there. Also, tell us what other things you would do if you had more time. Think about product features that we could ship to production or interesting analytics that could be valuable for our customers. This could be anything. The more ideas the better.
-> We'd expect that you build most of this in the language you know best. Send us your code with instructions on how to run it and a short write up of your results.
-> 
-> **If you can have the challenge back to me no later than 1 week from tomorrow morning that would be great.**
-Sounds like fun? Please let me know if you have any questions.
-> 
-> Thank you.
+As the aim (of the challenge) is rather open, I took few approaches (simple to more complex) with the aim to see if I can select the relevant answer(s) using the information in the questions and answers sets (let's say the questions are customers' requests/reviews/opinions about a product that has information document for customers service). 
+In summary I tried these approaches in the time that I had: 
 
-# Dataset
-The [data](zendesk_challenge.tsv) is a `.tsv` file that contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. In other words, there might be no or multiple relevant answers for a single question. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
+1. Word matching analysis(see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)): it basically counts the number of matching non-stopwords in the questions and provided answers to find their relevance. 
+2. Sentence root matching (see this code: [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py)): it uses root parsing methods to get the roots for every question and corresponding answers to find the most relevant answer.
+3. Sentence embeddings methods (see this code: [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py)): it uses sentence embedding methods to encode questions and answers to numeric vectors and measures the similarity between Qs and As vectors to find the relevance.
 
-# Data Analysis 
-I took a number of approaches for data analysis. As the question/aim (in the challenge) is rather open, I started with some basic text analyses to more complex NPL approaches. This was done with the hope to mainly see if I can predict the correct label (relevant answer) based on the information in the questions and answers sets. The methods include: 
+The performance of the methods was evaluated using F1-score (F1 of 1 is perfect and 0 is bad). Higher F1 scores show better performance of the model (e.g., meaning that the model is successful in providing relevant information to customers' requests).
 
-1. Basic text analyses (see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)) 
-2. Sentence root matching (see this code: [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py)) 
-3. Sentence embeddings methods (see this code: [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py))
-
-## Loading the data
-This code loads [`zendesk_challenge.tsv`](zendesk_challenge.tsv) and does some pre-processing:
-```python
-import os
-import csv
-data_path         = ‘.../...’
-file_name         = 'zendesk_challenge.tsv'
- 
-# first lets read the tsv data file
-with open(os.path.join(data_path, file_name)) as tsvfile:
-    tsv_reader    = csv.reader(tsvfile, delimiter='\t')
-    data_rows     = []
-    for row in tsv_reader:
-        data_rows.append(row)
-```
-
-`Data_rows` is a list that contains all lines of the [`zendesk_challenge.tsv`](zendesk_challenge.tsv). I need to do some pre-processing before doing anything. An example data point/line:
-
-|   QuestionID   |   Question   |   DocumentID   |   DocumentTitle   |   SentenceID   |   Sentence   |   Label   |
-|---|---|---|---|---|---|---|
-|   Q1           |   how are glacier caves formed?   |   D1   |   Glacier cave   |   D1-0   |   A partly submerged glacier cave on Perito Moreno Glacier .   |   0   |
+|  Methods: |  1  |  2  |  3  |
+|-----------|-----|-----|-----|
+| F1-score  |0.36 |0.31 | 0.34|
 
 
-This module [`QA_FileParse`](ZenDesk_testModule.py) goes through every line and makes a list of questions, answers, and other things (e.g., lemmatization, tokenization, stopword removal).
+Note that F1-scores at this stage are not very high but there is room for improvement by better pre-processings and models.
+The following shows implementation details.
 
-```python
-from ZenDesk_testModule import QA_FileParse
-answers_word, answers_word_len, answers, questions_word, questions_word_len, questions, labels = QA_FileParse(data_rows)
-```
+## Other TO DO things:
 
-## Basic text analysis
-Now that I have the data cleaned and pre-processed, I can start doing some basic things. This code [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py) will do the job. You just need to change these paths:
+From the technical side, if I had more time, I could play with other models (e.g., [Google BERT](https://github.com/google-research/bert)) and large datasets (e.g., [Natural Questions](https://ai.google.com/research/NaturalQuestions)) to see how they perform on the provided data. I also did not try to develop a supervised model based on the provided data to evaluate its performance. 
+
+Other more things that I could play with if I had more time are:
+* Categorize relevant answers and questions to a number of groups based on their content to see what are the several main contents. This then would help to, for example, provide related information on the company website or social media based on the content (and customers interests)
+
+* Grouping the questions into several main contents also helps to see how many times customers had similar requests from, let’s say, customer service (such things can also be used in the targetted advertisement)
+
+* Handling and processing answers in a better and even combining the relevant one to a new one can also be helpful to generate more comprehensive answers to a question with similar content. This would help to provide clearer information to customers with similar requests
+
+
+# Implementation Details
+## Word matching analysis
+After some data cleaning and pre-processing, I did some simple text analysess. This code [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py) will do the job. You just need to change these paths:
 
 ```python
 # data path and file name
@@ -66,12 +41,14 @@ data_path   = '.../...'
 result_path = '.../...'
 ```
 
-The first that comes in mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about (e.g., is the data have sport-related content). An easy way for this is using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/). Word clould emphasizes on the most frequent (repeated) words using larger font size (Fig. 1). We can conclude from Fig. 1 that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but at the same time it covers a range of topics.
+Before doing other stuff, the first that comes to mind is doing some word frequency analysis to see if the content of questions and answers provides us with any insight about what the whole text is about. For example, what sort of topics/words costumers cover in their requests/questions and what sort of information is provided to them. This helps the production line to maybe update the focus to topics of customers interest.
+
+An easy way for this is by using visualisation methods such as [Word Cloud](http://amueller.github.io/word_cloud/) as it makes things simpler to grasp at a glance.
+Results that the text (Qs and As) is mostly about a number of topics such as *united states*, *war*, and *country* but it also covers a range of other topics.
 
 
 ![Fig. 1](Word_Frequency.png)
-**Fig. 1:** Visualisation of word frequency in questions and answers
-
+Visualisation of word frequency in questions and answers
 
 
 
@@ -88,34 +65,21 @@ The 10 top most frequent words in questions and answers are:
 |  county  |    19    |   war    |   402    |
 |  first   |    17    | american |   384    |
 |   used   |    15    |   year   |   379    |
-|    u     |    15    |   used   |   352    |
 
 
+Then, I took one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that the answer is relevant to the question. The *word* can be rather useful in some simple applications (let's say a bot that provides information to customers about a particular hair product).
 
+I also generated random labels for the answers to check if F1 score of *word matching method* is higher than random labels. This random process was done 1000 times. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. 
 
+Results show that although the F1 score for *word matching method* is not very high, it is greater than a random answer guessing.
 
-Another basic thing to do is to see if there is any relationship between the number of words in questions and those of in answers. So, just a simple scatter plot and correlation can do the job (Fig. 2). Easy, Fig. 2 shows that there is no such relationship.  
-
-
-
-![Fig. 2](QA_length_corr.png)
-**Fig. 2:** Correlation between question and answer lengths
-
-
-
-
-Now, let's take one step further and consider a simple word matching method. So, I counted the number of non-stopwords in the question that also occur in the answer sentence. The higher this number is between two pairs, then there is a higher chance that I found/guessed the relevant answer for the question. 
-I used F1 score for performance evaluation. I also generated random labels and calculated the F1 score based on them to check if F1 score of *word matching method* is higher than random labels. This random process was done 1000 times. I used two randomization approach 1) randomized the indexes of the whole label column 2) randomized the indexes of each answer group labels. I found that although the F1 score for *word matching method* is not very high, it is greater than random distribution (Fig. 3).
-
-
-![Fig. 3](Word_Matching_Performance.png)
-**Fig. 3:** The performance of *word matching methods* compared to random distributions 
-
-
+![Fig. 2](Word_Matching_Performance.png)
+The performance of *word matching methods* compared to random distributions 
 
 
 ## Sentence root matching
 Another way to approach this question is using (syntactic) dependency parsing. I used [NLTK](https://www.nltk.org/), and [SpaCy’s](https://spacy.io/) root parsing to get the roots for every question and corresponding answer. The goal is to see if the root of the question matches with all the roots/sub-roots of the answer. If there is a root matching between two pairs, then there is a higher chance that the answer is relevant to the question. I used F1 score for performance evaluation.
+
 The code to run this part is [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py). You only need to change the paths
 
 ```python
@@ -128,16 +92,12 @@ result_path = '.../...'
 
 
 ## Sentence embedding methods
-Sentence embedding methods encode words or sentences into fixed length numeric vectors which are pre-trained on a large text corpus. These embeddings can then be used for various downstream tasks like finding similarity between two sentences.
+Sentence embedding methods encode words or sentences into fixed length numeric vectors which are pre-trained on a large text corpus. This can be very helpful as such text datasets cover a wide range of topics that can be very handy in applications similar to the ZD provided dataset.
+
+The embeddings can then be used for various tasks like finding similarity between two sentences (in our case similarity between questions and answers).
 Here, I used [InferSent](https://github.com/facebookresearch/InferSent) which is a sentence embeddings method that provides semantic representations for English sentences. It is trained on natural language inference data and generalizes well to many different tasks. The output of the model is a `numpy` array with a vector of dimension 4096 (for a sentence/word). Using these arrays, I found the similarities between questions and answers and predicted the labels based on the similarity.
 
 The code to run this part is [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py). Note that you need to first install [InferSent](https://github.com/facebookresearch/InferSent) to be able to run the code.
 
-*F1 score based on Sentence embedding (between Qs and As)*: **0.3119**
-
-## Other TO DO things:
-1. 
-
-
-
+*F1 score based on Sentence embedding (between Qs and As)*: **0.34**
  
