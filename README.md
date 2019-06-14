@@ -6,11 +6,13 @@ As the aim (of the challenge) is rather open, I took few approaches (simple to m
 
 In summary I tried these approaches in the time that I had: 
 
-1. Word matching analysis(see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)): it basically counts the number of matching non-stopwords in the questions and provided answers to find their relevance. 
+1. Word matching analysis (see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)): it basically counts the number of matching non-stopwords in the questions and provided answers to find their relevance. 
 2. Sentence root matching (see this code: [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py)): it uses root parsing methods to get the roots for every question and corresponding answers to find the most relevant answer.
 3. Sentence embeddings methods (see this code: [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py)): it uses sentence embedding methods to encode questions and answers to numeric vectors and measures the similarity between Qs and As vectors to find the relevance.
 
 The performance of the methods was evaluated using F1-score (F1 of 1 is perfect and 0 is bad). Higher F1 scores show better performance of the model (e.g., meaning that the model is successful in providing relevant information to customers' requests).
+
+Summary of performances:
 
 |  Methods: |  1  |  2  |  3  |
 |-----------|-----|-----|-----|
