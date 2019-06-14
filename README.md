@@ -1,6 +1,6 @@
 # ZD Challenge Overview
 
-The [dataset](zendesk_challenge.tsv) provided contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
+The provided [dataset](zendesk_challenge.tsv)  contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
 
 As the aim (of the challenge) is rather open, I took few approaches (simple to more complex) with the aim to see if I can select the relevant answer(s) using the information in the questions and answers sets (let's say the questions are customers' requests/reviews/opinions about a product that has information document for customers service). 
 In summary I tried these approaches in the time that I had: 
