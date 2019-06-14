@@ -2,14 +2,17 @@
 
 The provided [dataset](zendesk_challenge.tsv)  contains question and answer pairs. Every question in the dataset can have multiple relevant (correct) and irrelevant (incorrect) answers. The data includes a column with labels referring to relevant (correct=1) and irrelevant (incorrect=0) answers.
 
-As the aim (of the challenge) is rather open, I took few approaches (simple to more complex) with the aim to see if I can select the relevant answer(s) using the information in the questions and answers sets (let's say the questions are customers' requests/reviews/opinions about a product that has information document for customers service). 
+As the aim (of the challenge) is rather open, I took few approaches (simple to more complex) with the aim to see if I can select the relevant answer(s) using the information in the questions and answers sets (let's say the questions are customers' requests/reviews/opinions about a product that has a stored information document for customers service). 
+
 In summary I tried these approaches in the time that I had: 
 
-1. Word matching analysis(see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)): it basically counts the number of matching non-stopwords in the questions and provided answers to find their relevance. 
+1. Word matching analysis (see this code: [`ZenِDesk_BasicAnalysis.py`](ZenِDesk_BasicAnalysis.py)): it basically counts the number of matching non-stopwords in the questions and provided answers to find their relevance. 
 2. Sentence root matching (see this code: [`ZenDesk_SentRootMatch.py`](ZenDesk_SentRootMatch.py)): it uses root parsing methods to get the roots for every question and corresponding answers to find the most relevant answer.
 3. Sentence embeddings methods (see this code: [`ZenDesk_InferSent.py`](ZenDesk_InferSent.py)): it uses sentence embedding methods to encode questions and answers to numeric vectors and measures the similarity between Qs and As vectors to find the relevance.
 
 The performance of the methods was evaluated using F1-score (F1 of 1 is perfect and 0 is bad). Higher F1 scores show better performance of the model (e.g., meaning that the model is successful in providing relevant information to customers' requests).
+
+Summary of performances:
 
 |  Methods: |  1  |  2  |  3  |
 |-----------|-----|-----|-----|
@@ -23,7 +26,7 @@ The following shows implementation details.
 
 From the technical side, if I had more time, I could play with other models (e.g., [Google BERT](https://github.com/google-research/bert)) and large datasets (e.g., [Natural Questions](https://ai.google.com/research/NaturalQuestions)) to see how they perform on the provided data. I also did not try to develop a supervised model based on the provided data to evaluate its performance. 
 
-Other more things that I could play with if I had more time are:
+Other things that I could play with if I had more time are:
 * Categorize relevant answers and questions to a number of groups based on their content to see what are the several main contents. This then would help to, for example, provide related information on the company website or social media based on the content (and customers interests)
 
 * Grouping the questions into several main contents also helps to see how many times customers had similar requests from, let’s say, customer service (such things can also be used in the targetted advertisement)
